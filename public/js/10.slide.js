@@ -131,57 +131,366 @@
 		{ id: 7, src: '../img/lx-3-1.jpg', title: '의자2' },
 		{ id: 8, src: '../img/lx-3-2.jpg', title: '의자3' }
 	];
-	var html;
-	var idx = 0;
-	var lastIdx = slides.length-1;
+
+	var $slideStage = $(".wrapper5 .stage");
 	var $slideWrap = $(".wrapper5 .slide-wrap");
-	var $slide = [];
-	var $btnNext=$(".wrapper5 .btn-next");
-	var $btnPrev=$(".wrapper5 .btn-prev");
-	var target;
-	function onNext(){
-		idx++;
-		target = "-100%";
+	var $btnPrev = $(".wrapper5 .btn-prev");
+	var $btnNext = $(".wrapper5 .btn-next");
+	var $pagerWrap = $(".wrapper5 .pager-wrap");
+	var $pager;				// 생성된 $(".wrapper5 .pager")
+	var $slide;				// 화면에 보여지는 $(".slide") : 항상 3개만 존재
+	var $slides = [];	// $(".slide")들 모두를 담아놓는 배열(필요할때 복사해서 가져다 쓴다)
+	var idx = 0;											// 현재 화면에 보이는 slide의 index
+	var target;												// 움직일 목표값 (-100%, 100%)
+	var lastIdx = slides.length - 1;	// $(".slide")들 중에 마지막 index
+	var interval;											// setInterval을 담아놓는 변수
+
+	function init() {
+		var html, i;
+		for(i in slides) {
+			html = '<div class="slide">';
+			html += '<img class="w-100" src="'+slides[i].src+'">';
+			html += '<h1>'+i+'</h1>';
+			html += '</div>';
+			$slides[i] = $(html);
+			html = '<span class="pager">●</span>';
+			$pagerWrap.append(html);
+		}
+		$pager = $pagerWrap.find(".pager");
+		$pager.click(onPagerClick).eq(idx).addClass("active");
+		slideInit();
+		interval = setInterval(onNext, 3000);
+	}
+
+	function slideInit() {
+		$slideWrap.css("left", 0);
+		//가운데(나)
+		$slideWrap.html($slides[idx].clone());
+		//좌측(prev)
+		if(idx == 0) $slideWrap.prepend($slides[lastIdx].clone());
+		else $slideWrap.prepend($slides[idx - 1].clone());
+		//우측(next)
+		if(idx == lastIdx) $slideWrap.append($slides[0].clone());
+		else $slideWrap.append($slides[idx + 1].clone());
+		$slide = $slideWrap.find(".slide");
+	}
+
+	$btnPrev.click(onPrev);
+	$btnNext.click(onNext);
+	$slideStage.mouseover(onHover);
+	$slideStage.mouseleave(onLeave);
+
+	function onHover() {
+		clearInterval(interval);
+	}
+
+	function onLeave() {
+		interval = setInterval(onNext, 3000);
+	}
+
+	function onPrev() {
+		target = '100%';
+		idx = (idx == 0) ? lastIdx : idx - 1;
 		ani();
 	}
 
-	function onPrev(){
-		idx--;
-		target = "100%";
+	function onNext() {
+		target = '-100%';
+		idx = (idx == lastIdx) ? 0 : idx + 1;
 		ani();
+	}
+
+	function onPagerClick() {
+		// 클릭된 페이저에 따라 idx, slide를 바꾼다.
+		var oldIdx = idx;
+		idx = $(this).index();
+		if(oldIdx < idx) { //next
+			$slide.eq(2).remove();
+			$slideWrap.append($slides[idx].clone());
+			target = '-100%';
+			ani();
+		}
+		if(oldIdx > idx) { //prev
+			$slide.eq(0).remove();
+			$slideWrap.prepend($slides[idx].clone());
+			target = '100%';
+			ani();
+		}
+	}
+
+	function ani() {
+		$pager.removeClass("active").eq(idx).addClass("active");
+		$slideWrap.stop().animate({"left": target}, 500, slideInit);
+	}
+	init();
+})();
+
+
+// wrapper6 생성, prev/next, interval
+(function(){
+	var slides = [
+		{ id: 0, src: '../img/slide-0.jpg', title: '침대1' },
+		{ id: 1, src: '../img/slide-1.jpg', title: '침대2' },
+		{ id: 2, src: '../img/slide-2.jpg', title: '침대3' },
+		{ id: 3, src: '../img/slide-3.jpg', title: '쇼파4' }
+	];
+
+	var $slideStage = $(".wrapper6 .stage");
+	var $slideWrap = $(".wrapper6 .slide-wrap");
+	var $btnPrev = $(".wrapper6 .btn-prev");
+	var $btnNext = $(".wrapper6 .btn-next");
+	var $pagerWrap = $(".wrapper6 .pager-wrap");
+	var $pager;				// 생성된 $(".wrapper6 .pager")
+	var $slides = [];	// $(".slide")들 모두를 담아놓는 배열(필요할때 복사해서 가져다 쓴다)
+	var idx = 0;											// 현재 화면에 보이는 slide의 index
+	var lastIdx = slides.length - 1;	// $(".slide")들 중에 마지막 index
+	var interval;											// setInterval을 담아놓는 변수
+
+	function init() {
+		var html, i;
+		for(i in slides) {
+			html = '<div class="slide">';
+			html += '<img class="w-100" src="'+slides[i].src+'">';
+			html += '<h1>'+i+'</h1>';
+			html += '</div>';
+			$slides[i] = $(html);
+			html = '<span class="pager">●</span>';
+			$pagerWrap.append(html);
+		}
+		$pager = $pagerWrap.find(".pager");
+		$pager.click(onPagerClick).eq(idx).addClass("active");
+		slideInit();
+		interval = setInterval(onNext, 3000);
+	}
+
+	function slideInit() {
+		$slideWrap.html($slides[idx].clone());
+	}
+
+	$btnPrev.click(onPrev);
+	$btnNext.click(onNext);
+	$slideStage.mouseover(onHover);
+	$slideStage.mouseleave(onLeave);
+
+	function onHover() {
+		clearInterval(interval);
+	}
+
+	function onLeave() {
+		interval = setInterval(onNext, 3000);
+	}
+
+	function onPrev() {
+		idx = (idx == 0) ? lastIdx : idx - 1;
+		ani();
+	}
+
+	function onNext() {
+		idx = (idx == lastIdx) ? 0 : idx + 1;
+		ani();
+	}
+
+	function onPagerClick() {
+		idx = $(this).index();
+		ani();
+	}
+
+	function ani() {
+		$pager.removeClass("active").eq(idx).addClass("active");
+		$($slides[idx].clone()).appendTo($slideWrap).stop().animate({"opacity": 1}, 500, slideInit);
+	}
+	init();
+})();
+
+
+// wrapper7 생성, prev/next, interval
+(function(){
+	var slides = [
+		{ id: 0, src: '../img/slide-0.jpg', title: '침대1' },
+		{ id: 1, src: '../img/slide-1.jpg', title: '침대2' },
+		{ id: 2, src: '../img/slide-2.jpg', title: '침대3' },
+		{ id: 3, src: '../img/slide-3.jpg', title: '쇼파4' }
+	];
+
+	var $slideStage = $(".wrapper7 .stage");
+	var $slideWrap = $(".wrapper7 .slide-wrap");
+	var $btnPrev = $(".wrapper7 .btn-prev");
+	var $btnNext = $(".wrapper7 .btn-next");
+	var $pagerWrap = $(".wrapper7 .pager-wrap");
+	var $title = $(".wrapper7 .title");
+	var $pager;				// 생성된 $(".wrapper7 .pager")
+	var $slides = [];	// $(".slide")들 모두를 담아놓는 배열(필요할때 복사해서 가져다 쓴다)
+	var idx = 0;											// 현재 화면에 보이는 slide의 index
+	var lastIdx = slides.length - 1;	// $(".slide")들 중에 마지막 index
+	var interval;											// setInterval을 담아놓는 변수
+
+	function init() {
+		var html, i;
+		for(i in slides) {
+			html = '<div class="slide">';
+			html += '<img class="w-100" src="'+slides[i].src+'">';
+			html += '<h1>'+i+'</h1>';
+			html += '<div class= "title">"'+slides[i].title +'" </div>'
+			html += '</div>';
+			$slides[i] = $(html);
+			html = '<span class="pager">●</span>';
+			$pagerWrap.append(html);
+		}
+		$pager = $pagerWrap.find(".pager");
+		$pager.click(onPagerClick).eq(idx).addClass("active");
+		slideInit();
+		//interval = setInterval(onNext, 3000);
+	}
+
+	function slideInit() {
+		// $slideWrap.html($slides[idx].clone());
+		var $my = $($slides[idx].clone()).appendTo($slideWrap.empty());
+		$my.find(".title").css("opacity");
+		$my.find(".title").css("transform");
+		$my.find(".title").css({"opacity": 1 , "transform": "translateX(0)"});
+	}
+
+	$btnPrev.click(onPrev);
+	$btnNext.click(onNext);
+	//$slideStage.mouseover(onHover);
+	//$slideStage.mouseleave(onLeave);
+
+	function onHover() {
+		clearInterval(interval);
+	}
+
+	function onLeave() {
+		interval = setInterval(onNext, 3000);
+	}
+
+	function onPrev() {
+		idx = (idx == 0) ? lastIdx : idx - 1;
+		ani();
+	}
+
+	function onNext() {
+		idx = (idx == lastIdx) ? 0 : idx + 1;
+		ani();
+	}
+
+	function onPagerClick() {
+		idx = $(this).index();
+		ani();
+	}
+
+	function ani() {
+		$pager.removeClass("active").eq(idx).addClass("active");
+		$slideWrap.append($slides[idx].clone());
+		$slideWrap.find(".slide").eq(0).css({"opacity": 0, "transform": "scale(1.3)"});
+		$slideWrap.find(".slide").eq(1).css("opacity");
+		$slideWrap.find(".slide").eq(1).css("transform");
+		$slideWrap.find(".slide").eq(1).css({"opacity": 1, "transform": "scale(1)"});
+		setTimeout(slideInit, 500);
+	}
+
+	init();
+
+} )();
+
+
+// wrapper8 생성, prev/next, interval slideEach
+(function(){
+	/* 전역변수 선언 */
+	var slides = [
+		{ id: 0, src: '../img/lx-2-0.jpg', title: '침대1' },
+		{ id: 1, src: '../img/lx-2-1.jpg', title: '침대2' },
+		{ id: 2, src: '../img/lx-2-2.jpg', title: '침대3' },
+		{ id: 3, src: '../img/lx-5-0.jpg', title: '쇼파1' },
+		{ id: 4, src: '../img/lx-5-1.jpg', title: '쇼파2' },
+		{ id: 5, src: '../img/lx-5-2.jpg', title: '쇼파3' },
+		{ id: 6, src: '../img/lx-3-0.jpg', title: '의자1' },
+		{ id: 7, src: '../img/lx-3-1.jpg', title: '의자2' },
+		{ id: 8, src: '../img/lx-3-2.jpg', title: '의자3' },
+		{ id: 9, src: '../img/lx-6-0.jpg', title: '쇼파4' },
+		{ id: 10, src: '../img/lx-6-1.jpg', title: '쇼파5' },
+		{ id: 11, src: '../img/lx-6-2.jpg', title: '쇼파6' }
+	];
+	
+	var $wrapper = $(".wrapper8");
+	var $slideWrap = $(".wrapper8 .slide-wrap");
+	var $btnPrev = $(".btn-prev", $wrapper);
+	var $btnNext = $(".btn-next", $wrapper);
+	var $slides = [];
+	var idx = 0;
+	var lastIdx  = slides.length-1;
+	var slideNum = 4;
+	var target;
+	var winWid = $(window).outerWidth();
+	var interval;
+	/* 사용자 함수 */
+
+
+init();
+	function init(){
+		var i, html;
+		for (var i in slides){
+			html = "<div class='slide'>";
+			html += "<img class='w-100' src='"+slides[i].src+"'>";
+			html += "<h1>"+i+"</h1>";
+			html += "</div>";
+			$slides.push($(html));
+		}
+		slideInit();
+		/* interval = setInterval(onClickNext,3000); */
+	}
+
+	function slideInit(){
+		$btnPrev.off("click").click(onClickPrev);
+		$btnNext.off("click").click(onClickNext);
+		$($slides[idx].clone()).appendTo($slideWrap.empty().attr("style",""));
+		if (idx == 0){
+			$($slides[lastIdx].clone()).prependTo($slideWrap);
+			} else {
+			$($slides[idx-1].clone()).prependTo($slideWrap);
+			}
+		for( var i = 1; i<=slideNum; i++){
+			if((idx+i) > lastIdx) $($slides[-(lastIdx - (idx+i))-1].clone()).appendTo($slideWrap);
+			else $($slides[idx+i].clone()).appendTo($slideWrap);
+		} 
 	}
 
 	function ani(){
-		$slideWrap.animate({"left" : target },500,function(){
-			init();
-		})
-	}	
+		$slideWrap.stop().animate({"left": target+"%"}, 500, slideInit);
+		}
 
-	function cloneSlide(idx,next,prev){
-		$slideWrap.append($slide[idx].clone());
-  	$slideWrap.append($slide[next].clone());
-		$slideWrap.prepend($slide[prev].clone());
+	/* 이벤트 콜백 */
+	function onClickNext(){
+		$(this).off("click");
+		idx = idx == lastIdx ? 0 : idx + 1;
+		if(winWid < 576){
+			target = -200;
+		} else if(winWid < 768){
+			target = -100;
+		} else if(winWid < 992){
+			target = -66.6666;
+		} else {
+			target = -50; 
+		}  
+		ani();
 	}
+	
+	function onClickPrev(){
+		$(this).off("click");
+		idx = idx == 0 ? lastIdx : idx - 1;
+		target=0;
+		ani();
+	}
+	
+	
+	
+	/* 이벤트 등록 */
 
-	function init(){
-		for(var i in slides){
-		html = "<div class='slide'>" ;
-		html +=	"<img src='"+slides[i].src+"'>";
-		html += "<h1> " + i + " </h1>"
-		html +=	"</div>";
-		$slide[i] = $(html);
-	}
-	$slideWrap.empty();
-	if (idx == 0){
-  		cloneSlide(idx,idx+1,lastIdx);
-	} else if (idx == lastIdx){
-			cloneSlide(idx,0,idx-1);
-	} else {
-			cloneSlide(idx,idx+1,idx-1);
-	}
-	}
-
-	$btnNext.click(onNext);
-	$btnPrev.click(onPrev);
-	init();
+	$btnPrev.click(onClickPrev);
+	$btnNext.click(onClickNext);
+/* 	$wrapper.mouseover(function(){
+		clearInterval(interval);
+	}).mouseleave(function(){
+		interval = setInterval(onClickNext,3000);
+	}); */
+	
 })();
