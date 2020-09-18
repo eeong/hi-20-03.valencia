@@ -1,0 +1,24 @@
+.wrapper {
+	max-width: 1200px;
+	margin: 0 auto;
+	margin-bottom: 100px;
+}
+
+.stage {
+	position: relative;
+}
+.slide-wrap{
+	position: relative;
+	display: flex;
+}
+.wrapper1 .slide{
+	flex:100% 0 0; 
+}
+
+.wrapper2 .slide-wrap{
+	position: relative;
+	display: flex;
+}
+.wrapper2 .slide{
+	flex:100% 0 0; 
+}

@@ -436,22 +436,22 @@ init();
 			$slides.push($(html));
 		}
 		slideInit();
-		/* interval = setInterval(onClickNext,3000); */
+		interval = setInterval(onClickNext,3000);
 	}
 
 	function slideInit(){
-		$btnPrev.off("click").click(onClickPrev);
 		$btnNext.off("click").click(onClickNext);
+		$btnPrev.off("click").click(onClickPrev);
 		$($slides[idx].clone()).appendTo($slideWrap.empty().attr("style",""));
-		if (idx == 0){
+		if (idx == 0)
 			$($slides[lastIdx].clone()).prependTo($slideWrap);
-			} else {
+			else 
 			$($slides[idx-1].clone()).prependTo($slideWrap);
-			}
+			
 		for( var i = 1; i<=slideNum; i++){
 			if((idx+i) > lastIdx) $($slides[-(lastIdx - (idx+i))-1].clone()).appendTo($slideWrap);
 			else $($slides[idx+i].clone()).appendTo($slideWrap);
-		} 
+		}
 	}
 
 	function ani(){
@@ -472,6 +472,7 @@ init();
 			target = -50; 
 		}  
 		ani();
+		
 	}
 	
 	function onClickPrev(){
@@ -480,17 +481,18 @@ init();
 		target=0;
 		ani();
 	}
-	
+
+
 	
 	
 	/* 이벤트 등록 */
 
 	$btnPrev.click(onClickPrev);
 	$btnNext.click(onClickNext);
-/* 	$wrapper.mouseover(function(){
+	$wrapper.mouseover(function(){
 		clearInterval(interval);
 	}).mouseleave(function(){
 		interval = setInterval(onClickNext,3000);
-	}); */
+	});
 	
 })();

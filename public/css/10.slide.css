@@ -84,6 +84,7 @@ html, body {height: 10000px;}
 .wrapper7 .pager {font-size: 30px; color: #fff; cursor: pointer;}
 .wrapper7 .pager.active {color: crimson;}
 
+/* wrapper8 */
 .wrapper8{position: relative;}
 .wrapper8 .stage {width: 90%; position: relative; margin:auto; overflow: hidden;}
 .wrapper8 .slide-wrap {position: relative; display: flex; width: 150%; left:-25%;}
