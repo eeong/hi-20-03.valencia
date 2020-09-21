@@ -39,7 +39,11 @@
 	padding:4px 16px 8px 16px;}
 .top-lt {display: flex; align-items: center;}
 .top-lt .navi-wrap {display: flex; margin-left: 20px; align-items: center;}
+<<<<<<< HEAD
 .top-lt .navi-wrap .navi {margin: 16px; position: relative; cursor: pointer;}
+=======
+.top-lt .navi-wrap .navi {margin: 16px; cursor: pointer; position: relative;}
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 .top-lt .navi-wrap .divide {border-left: 1px solid #ccc; margin: -2px 20px 0 20px; height: 14px;}
 .top-lt .fa-bars {font-size: 24px; display: none; cursor: pointer; margin-left: 24px;}
 .top-rt {display: flex; align-items: center;}
@@ -50,9 +54,14 @@
 .top-rt .fa-phone-volume {display: none;}
 .top-rt .btn-ghost {margin-left: 32px;}
 
+<<<<<<< HEAD
 .sub-wrap{position: absolute; background-color: #222; padding: 32px; min-width: 250px; min-width: 250px; font-size: 5px; display: none;}
 
 /* display: none = dom에서 관리를 안함 존재x  opacity:0 = 투명도,  visibility:hidden = display보다 약함.   */
+=======
+.sub-wrap {position: absolute; background-color: #222; padding: 32px; width: 250px; height: 250px; font-size: 50px; display: none;}
+
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 
 
 

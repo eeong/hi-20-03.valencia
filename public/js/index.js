@@ -207,33 +207,64 @@ $(".type-1 .btn-wish").click(onWishModalShow);
 $(".modal-wrapper .btn-close, .modal-wrapper").click(onModalHide);
 $(".modal-wrap").click(function(e) { e.stopPropagation() });
 
- // slide
+/********************** 슬라이드 *************************/
 (function(){
-	var $wrapper = $(".type-slide .slide-wrapper")
+	var $stage = $(".type-slide .stage");
+	var $wrapper = $(".type-slide .slide-wrapper");
 	var $slides = $(".type-slide .slide");
-	var $titleLt= $(".type-slide .title-lt")
+	var $titleLt = $(".type-slide .title-lt"); 
 	var $titles = $(".type-slide .title-lt .title-wrap");
-	var $pagers = $(".type-slide .pager");
+	var $pagerWrap = $(".type-slide .pager-wrap");
 	var idx = 0;
-	var lastIdx = $titles.length-1;
-
+	var lastIdx = $slides.length - 1;
+	var interval;
 	init();
-	function init(){
-		$wrapper.empty();
-		$(".type-slide .title-lt .title-wrap").remove();
+	
+	function init() {
+		for(var i=0; i<$slides.length; i++) {
+			$pagerWrap.append('<div class="pager">·</div>');
+		}
+		$pagerWrap.find(".pager").eq(idx).addClass("active");
+		$pagerWrap.find(".pager").click(onClick);
+		interval = setInterval(onInterval, 3000);
+		$stage.mouseenter(onEnter).mouseleave(onLeave);
 		slideInit();
 	}
-	function slideInit(){
-		$($($slides[idx]).clone()).appnedTo($wrapper);
-		$($($titles[idx]).clone()).appendTo($titleLt);	
+
+	function slideInit() {
+		$(".type-slide .slide").remove();
+		$(".type-slide .title-lt .title-wrap").remove();
+		$($($slides[idx]).clone()).appendTo($wrapper);
+		$($($titles[idx]).clone()).prependTo($titleLt);
+		$(".type-slide .title-lt .title-wrap").css("opacity");
+		$(".type-slide .title-lt .title-wrap").css("transform");
+		$(".type-slide .title-lt .title-wrap").css({"opacity": 1, "transform": "translateX(0)"});
 	}
 
-	function ani(){
-
+	function onEnter() {
+		clearInterval(interval);
 	}
 
-	function onClick(){
+	function onLeave() {
+		interval = setInterval(onInterval, 3000);
+	}
+
+	function onClick() {
 		idx = $(this).index();
+		ani();
 	}
-	$pagers.click(onClick);
+
+	function onInterval() {
+		idx = (idx == lastIdx) ? 0 : idx + 1;
+		ani();
+	}
+
+	function ani() {
+		$pagerWrap.find(".pager").removeClass("active");
+		$pagerWrap.find(".pager").eq(idx).addClass("active");
+		$(".type-slide .title-lt .title-wrap").stop().animate({"opacity": 0}, 300);
+		$($($slides[idx]).clone()).appendTo($wrapper).stop().animate({"opacity": 1}, 500, slideInit);
+	}
+
 })();
+ 

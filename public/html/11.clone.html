@@ -3,15 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
 	<title>Document</title>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<style>
 		.box{height: 100px; width: 100px; margin: 4px; background-color: red;}
+=======
+	<title>clone/append/prepend</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<style>
+		.box {width: 100px; height: 100px; margin: 4px; background-color: red;}
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 	</style>
 	<script src="../js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 	<div class="text-center p-5">
+<<<<<<< HEAD
 		<div class="btn btn-clone btn-primary">copy paste</div>
 		<div class="btn btn-clear btn-primary">clear</div>
 	</div>
@@ -29,6 +37,21 @@
 
 		function onClear(){
 			$(".wrapper").clear();
+=======
+		<button class="btn-clone btn btn-primary">복붙</button>
+		<button class="btn-clear btn btn-primary">삭제</button>
+	</div>
+	<div class="wrapper container d-flex flex-wrap p-5 border border-danger"></div>
+	<script>
+		var $box = $('<div class="box"></div>');
+		$(".btn-clone").click(onClick);
+		$(".btn-clear").click(onClear);
+		function onClick() {
+			$(".wrapper").append($box.clone());
+		}
+		function onClear() {
+			$(".wrapper").empty();
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 		}
 	</script>
 </body>

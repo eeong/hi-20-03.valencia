@@ -35,11 +35,19 @@
 	100% {transform: scaleX(1);}
 }
 
+<<<<<<< HEAD
 .top-wrap {display: flex; justify-content: space-between; font-family: 'Mukta', sans-serif;  font-weight: 500; letter-spacing: -1; background-color: #222; color: #f8f8f8; flex-wrap: wrap;
 	padding:4px 16px 8px 16px; }
 .top-lt {display: flex; align-items: center; position: relative; }
 .top-lt .navi-wrap {display: flex; margin-left: 20px; align-items: center;}
 .top-lt .navi-wrap .navi {margin: 16px; position: relative; cursor: pointer;}
+=======
+.top-wrap {display: flex; justify-content: space-between; font-family: 'Mukta', sans-serif;  font-weight: 500; letter-spacing: -1; background-color: #222; color: #f8f8f8; 
+	padding:4px 16px 8px 16px; flex-wrap: wrap;}
+.top-lt {display: flex; align-items: center; position: relative;}
+.top-lt .navi-wrap {display: flex; margin-left: 20px; align-items: center;}
+.top-lt .navi-wrap .navi {margin: 16px; cursor: pointer;}
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 .top-lt .navi-wrap .divide {border-left: 1px solid #ccc; margin: -2px 20px 0 20px; height: 14px;}
 .top-lt .fa-bars {font-size: 24px; display: none; cursor: pointer; margin-left: 24px;}
 .top-rt {display: flex; align-items: center;}
@@ -50,11 +58,17 @@
 .top-rt .fa-phone-volume {display: none;}
 .top-rt .btn-ghost {margin-left: 32px;}
 
+<<<<<<< HEAD
 .sub-wrap{width: 100%; height: 300px; background-color: rgba(0,0,0,0.5); font-size: 50px; left:-16px; display: flex; justify-content: center; align-items: center; position: absolute; top:66px; display: none;}
 
 
 /* display: none = dom에서 관리를 안함 존재x  opacity:0 = 투명도,  visibility:hidden = display보다 약함.   */
 
+=======
+.sub-wrap {height: 300px; background-color: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; font-size: 50px; position: absolute; left: 0; top: 68px; width: 100%;}
+
+
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 
 
 /** 반응형 *********************/

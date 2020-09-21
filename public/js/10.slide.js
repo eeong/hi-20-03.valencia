@@ -317,7 +317,10 @@
 	var $btnPrev = $(".wrapper7 .btn-prev");
 	var $btnNext = $(".wrapper7 .btn-next");
 	var $pagerWrap = $(".wrapper7 .pager-wrap");
+<<<<<<< HEAD
 	var $title = $(".wrapper7 .title");
+=======
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 	var $pager;				// 생성된 $(".wrapper7 .pager")
 	var $slides = [];	// $(".slide")들 모두를 담아놓는 배열(필요할때 복사해서 가져다 쓴다)
 	var idx = 0;											// 현재 화면에 보이는 slide의 index
@@ -330,7 +333,11 @@
 			html = '<div class="slide">';
 			html += '<img class="w-100" src="'+slides[i].src+'">';
 			html += '<h1>'+i+'</h1>';
+<<<<<<< HEAD
 			html += '<div class= "title">"'+slides[i].title +'" </div>'
+=======
+			html += '<div class="title">'+slides[i].title+'</div>';
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 			html += '</div>';
 			$slides[i] = $(html);
 			html = '<span class="pager">●</span>';
@@ -343,11 +350,19 @@
 	}
 
 	function slideInit() {
+<<<<<<< HEAD
 		// $slideWrap.html($slides[idx].clone());
 		var $my = $($slides[idx].clone()).appendTo($slideWrap.empty());
 		$my.find(".title").css("opacity");
 		$my.find(".title").css("transform");
 		$my.find(".title").css({"opacity": 1 , "transform": "translateX(0)"});
+=======
+		//$slideWrap.html($slides[idx].clone());
+		var $my = $($slides[idx].clone()).appendTo($slideWrap.empty());
+		$my.find(".title").css("opacity");
+		$my.find(".title").css("transform");
+		$my.find(".title").css({"opacity": 1, "transform": "translateX(0)"});
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 	}
 
 	$btnPrev.click(onPrev);
@@ -381,6 +396,7 @@
 	function ani() {
 		$pager.removeClass("active").eq(idx).addClass("active");
 		$slideWrap.append($slides[idx].clone());
+<<<<<<< HEAD
 		$slideWrap.find(".slide").eq(0).css({"opacity": 0, "transform": "scale(1.3)"});
 		$slideWrap.find(".slide").eq(1).css("opacity");
 		$slideWrap.find(".slide").eq(1).css("transform");
@@ -495,4 +511,107 @@ init();
 		interval = setInterval(onClickNext,3000);
 	});
 	
+=======
+		var $slide0 = $slideWrap.find(".slide").eq(0);
+		var $slide1 = $slideWrap.find(".slide").eq(1);
+		$slide0.css({"opacity": 0, "transform": "scale(1.3)"});
+		$slide1.css("opacity");
+		$slide1.css("transform");
+		$slide1.css({"opacity": 1, "transform": "scale(1)"});
+		setTimeout(slideInit, 500);
+	}
+	init();
+})();
+
+// wrapper8 - 상품슬라이드
+(function(){
+	/*********** 전역변수 선언 ***********/
+	var datas = [
+		{ id: 0, src: '../img/lx-1-0.jpg', title: '침대1' },
+		{ id: 1, src: '../img/lx-1-1.jpg', title: '침대2' },
+		{ id: 2, src: '../img/lx-1-2.jpg', title: '침대3' },
+		{ id: 3, src: '../img/lx-2-0.jpg', title: '쇼파4' },
+		{ id: 4, src: '../img/lx-2-1.jpg', title: '쇼파5' },
+		{ id: 5, src: '../img/lx-2-2.jpg', title: '쇼파6' },
+		{ id: 6, src: '../img/lx-3-0.jpg', title: '의자1' },
+		{ id: 7, src: '../img/lx-3-1.jpg', title: '의자2' },
+		{ id: 8, src: '../img/lx-3-2.jpg', title: '의자3' },
+		{ id: 9, src: '../img/lx-6-0.jpg', title: '쇼파1' },
+		{ id: 10, src: '../img/lx-6-1.jpg', title: '쇼파2' },
+		{ id: 11, src: '../img/lx-6-2.jpg', title: '쇼파3' },
+	];
+
+	var $wrapper = $(".wrapper8");
+	var $slideWrap = $(".slide-wrap", $wrapper); 
+	var $btnPrev = $(".btn-prev", $wrapper); 
+	var $btnNext = $(".btn-next", $wrapper);
+	var $slides = [];		// 모든 .slide
+	var idx = 0;
+	var lastIdx = datas.length - 1;
+	var winWid;					// 현재창의 크기
+	var target;
+	var interval;
+
+	/*********** 사용자 함수 ***********/
+	init();
+	function init() {
+		var i, html;
+		for(i in datas) {
+			html  = '<div class="slide">';
+			html += '<img src="'+datas[i].src+'" class="w-100">';
+			html += '<h1>'+i+'</h1>';
+			html += '</div>';
+			$slides.push($(html));
+		}
+		slideInit();
+		interval = setInterval(onNext, 3000);
+	}
+
+	function slideInit() {
+		// $btnPrev.show();
+		// $btnNext.show();
+		$btnPrev.off("click").click(onPrev);
+		$btnNext.off("click").click(onNext);
+		$($slides[idx].clone()).appendTo($slideWrap.empty().attr("style", ""));
+		if(idx == 0) $($slides[lastIdx].clone()).prependTo($slideWrap);
+		else $($slides[idx - 1].clone()).prependTo($slideWrap);
+		for(var i=1; i<=4; i++) {
+			if(idx + i > lastIdx) $($slides[idx + i - 1 - lastIdx].clone()).appendTo($slideWrap);
+			else $($slides[idx + i].clone()).appendTo($slideWrap);
+		}
+	}
+
+	function ani() {
+		$slideWrap.stop().animate({"left": target+"%"}, 500, slideInit);
+	}
+
+	/*********** 이벤트 콜백 ***********/
+	function onPrev() {
+		// $(this).hide();
+		$(this).off("click");
+		idx = idx == 0 ? lastIdx : idx - 1;
+		target = 0;
+		ani();
+	}
+	
+	function onNext() {
+		// $(this).hide();
+		$(this).off("click");
+		idx = idx == lastIdx ? 0 : idx + 1;
+		winWid = $(window).outerWidth();
+		if(winWid < 576) target = -200;
+		else if(winWid < 768) target = -100;
+		else if(winWid < 992) target = -66.6666;
+		else target = -50;
+		ani();
+	}
+
+	/*********** 이벤트 등록 ***********/
+	$wrapper.hover(function(){
+		clearInterval(interval);
+	}, function(){
+		interval = setInterval(onNext, 3000);
+	});
+
+>>>>>>> d02404ecaba11f24ad36e5bd2d58cd0778a6a3c7
 })();
