@@ -17,14 +17,18 @@ var bannerInterval;
 var winWid;
 var winHei;
 
+var $list;			// 현재 선택된 .list
+var $pager;			// 현재 선택된 .pager
+var prdLastIdx;	// 상품의 이미지의 마지막 idx값(length-1) - 상품에 hover할때만 변한다.
+/*
 var prdIdx;					// 상품의 idx - 상품에 hover할때만 변한다.
-var prdLastIdx;			// 상품의 이미지의 마지막 idx값(length-1) - 상품에 hover할때만 변한다.
 var prdListIdx;			// 상품에서 이미지의 idx - Interval, pagerclick, 상품에 hover(1), leave(0)
+*/
 var prdInterval;		// 상품의 Animation 간격
-var $list; // 현재 선택된 리스트
-var $pager; // 현재 선택된 페이저
 
 var brandTitleWidth;
+
+var bottomChk = true; // .btnClose가 클릭되었는지 체크
 
 /********************** 사용자함수 *************************/
 function headerBanner() {
@@ -36,11 +40,14 @@ function headerBanner() {
 
 function prdAni() {
 	$pager.addClass("active").siblings().removeClass("active");
-	
-	$list.css({"position": "relative", "display": "block"}).stop().animate({"opacity": 1}, 500).siblings().css({"position": "absolute"}).stop().animate({"opacity": 0}, 500, function(){$(this).css({"display": "none"});
+	$list
+	.css({"position": "relative", "display": "block"})
+	.stop().animate({"opacity": 1}, 500)
+	.siblings()
+	.css({"position": "absolute"})
+	.stop().animate({"opacity": 0}, 500, function(){
+		$(this).css({"display": "none"});
 	});
-	
-	
 }
 
 /********************** 이벤트콜백 *************************/
@@ -53,8 +60,14 @@ function onScroll() {
 	// console.log(section[1], sct);
 
 	// header-banner 프레임 애니메이션
-	if(sct > 0) $(".banner-frame").css("border-width", "32px");
-	else $(".banner-frame").css("border-width", 0);
+	if(sct > 0) {
+		$(".banner-frame").css("border-width", "32px");
+		if(bottomChk) $(".bottom-wrapper").css("bottom", 0);
+	}
+	else {
+		$(".banner-frame").css("border-width", 0);
+		$(".bottom-wrapper").css("bottom", "-70px");
+	}
 
 	if(winWid > 991) {
 		if(section[1] > sct) {
@@ -176,20 +189,20 @@ function onPrdLeave() {
 	$list = $(this).find(".list").eq(0);
 	$pager = $(this).find(".pager").eq(0);
 	clearInterval(prdInterval);
-	prdAni();	//.prd-stage
+	prdAni();
 }
 
 function onPagerClick() {
 	var idx = $(this).index();
 	$list = $(this).parent().prev().find(".list").eq(idx);
 	$pager = $(this);
+	prdAni();
 	clearInterval(prdInterval);
-	prdAni();				// .pager
+	prdInterval = setInterval(onPrdInterval, 4000);
 }
 
 function onPrdInterval(){
-	if ($list.index() ==	$list.siblings().length) $list = $list.siblings().eq(0);
-	else $list = $list.next();
+	$list = ($list.index() == $list.siblings().length) ? $list.siblings().eq(0) : $list.next();
 	$pager = $list.parent().next().find(".pager").eq($list.index());
 	prdAni();
 }
@@ -204,9 +217,22 @@ function onModalHide() {
 	$(".modal-wrapper").css("display", "none");
 }
 
+function onTop() {
+	$("html, body").stop().animate({"scrollTop": 0}, 500);
+}
+
+function onClose() {
+	if(bottomChk) {
+		bottomChk = false;
+		$(".bottom-wrapper").css("bottom", "-70px");
+	}
+}
+
 /********************** 이벤트등록 *************************/
 $(window).scroll(onScroll);
-$(window).resize(onResize).trigger("resize");
+$(window).resize(onResize).imagesLoaded(function(){
+	$(window).trigger("resize");
+});
 $(".header-wrapper").find(".list").hover(onListOver, onListLeave);
 bannerInterval = setInterval(onBannerInterval, 8000);
 
@@ -220,6 +246,8 @@ $(".brand-wrapper .prd-stage").find(".pager").click(onPagerClick);
 $(".brand-wrapper .btn-wish").click(onWishModalShow);
 $(".modal-wrapper .btn-close, .modal-wrapper").click(onModalHide);
 $(".modal-wrap").click(function(e) { e.stopPropagation() });
+$("#btnTop").click(onTop);
+$("#btnClose").click(onClose);
 
 /********************** 슬라이드 *************************/
 (function(){
@@ -282,3 +310,19 @@ $(".modal-wrap").click(function(e) { e.stopPropagation() });
 
 })();
  
+
+/************ .info-wrapper *************/
+/*
+$(".info-wrapper > .info-lt").mouseenter(onInfoLtOver);
+$(".info-wrapper > .info-lt").mouseleave(onInfoLtLeave);
+function onInfoLtOver() {
+	$(this).find(".underline").eq(0).find("div").attr("style", "");
+	$(this).find(".underline").eq(1).find("div").attr("style", "");
+	$(this).find(".underline").eq(0).find("div").css({"animation-delay": "0s", "animation-name": "underline"});
+	$(this).find(".underline").eq(1).find("div").css({"animation-delay": "0.25s", "animation-name": "underline"});
+}
+function onInfoLtLeave() {
+	$(this).find(".underline").eq(0).find("div").css({"transform": "scaleX(1)", "animation-delay": "0.25s", "animation-name": "underline-rev"});
+	$(this).find(".underline").eq(1).find("div").css({"transform": "scaleX(1)", "animation-delay": "0s", "animation-name": "underline-rev"});
+}
+*/
